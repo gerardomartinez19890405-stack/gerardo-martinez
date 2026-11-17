@@ -1,2 +1,5 @@
 streamlit
-segno
+folium
+streamlit-folium
+streamlit-js-eval
+pandas
