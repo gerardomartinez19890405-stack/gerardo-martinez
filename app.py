@@ -40,7 +40,24 @@ if "viaje_activo" not in st.session_state:
 
 if "puntos_gps" not in st.session_state:
     st.session_state.puntos_gps = []
+import os
+import pandas as pd
+import streamlit as st
 
+# Archivo de persistencia
+CSV_HISTORIAL = "historial_bitacoras.csv"
+
+# Verificar si hay un viaje activo guardado previamente en el CSV
+viaje_activo = None
+if os.path.exists(CSV_HISTORIAL):
+  df_temp = pd.read_csv(CSV_HISTORIAL)
+  if not df_temp.empty:
+    # Filtramos si hay alguno con "Pendiente" en llegada o retorno
+    pendientes = df_temp[df_temp["Hora_Llegada_Destino"] == "Pendiente"]
+    if not pendientes.empty:
+      viaje_activo = pendientes.iloc[
+          -1
+      ].to_dict()  # Recupera el último viaje activo
 st.title("🚗 Sistema de Control Vehicular y Bitácora GPS")
 
 # Pestañas superiores (más cómodas en el celular que el menú lateral)
